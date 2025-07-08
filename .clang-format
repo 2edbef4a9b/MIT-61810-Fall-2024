@@ -1,0 +1,20 @@
+---
+BasedOnStyle: GNU
+IndentWidth: 2
+UseTab: Never
+ColumnLimit: 100
+PointerAlignment: Right
+AllowShortFunctionsOnASingleLine: None
+AlwaysBreakAfterReturnType: All
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterFunction: true
+  AfterControlStatement: false
+  AfterClass: false
+  AfterStruct: false
+  AfterEnum: false
+  AfterNamespace: false
+  BeforeCatch: false
+  BeforeElse: false
+SpaceBeforeParens: ControlStatements
+SpaceInEmptyParentheses: false

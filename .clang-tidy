@@ -1,0 +1,53 @@
+---
+# Configuration of clang-tidy.
+#
+# Here is an explanation for why some of the checks are disabled:
+#
+#  -modernize-avoid-c-arrays: We only use C arrays when they seem to be the
+#      right tool for the job, such as `char foo[] = "hello"`. In these cases,
+#      avoiding C arrays often makes the code less readable, and std::array is
+#      not a drop-in replacement because it doesn't deduce the size.
+#
+#  -modernize-return-braced-init-list: We think removing typenames and using
+#      only braced-init can hurt readability.
+#
+#  -modernize-use-trailing-return-type: clang-tidy recommends using
+#      `auto Foo() -> std::string { return ...; }`, we think the code is less
+#      readable in this form.
+#
+#  -performance-enum-size: Smaller enums may or not may be faster, it depends on
+#      the architecture. If data size was a consideration, we might decide to
+#      enable the warnings.
+#
+#  -readability-redundant-declaration: A friend declaration inside a class
+#      counts as a declaration, so if we also declare that friend outside the
+#      class in order to document it as part of the public API, that will
+#      trigger a redundant declaration warning from this check.
+#
+#  -bugprone-easily-swappable-parameters: too many false positives.
+
+Checks: >
+    -*,
+    bugprone-*,
+    cert-*,
+    clang-analyzer-*,
+    concurrency-*,
+    cppcoreguidelines-*,
+    google-*,
+    hicpp-*,
+    linuxkernel-*,
+    misc-*,
+    modernize-*,
+    performance-*,
+    portability-*,
+    readability-*,
+    -modernize-avoid-c-arrays,
+    -modernize-return-braced-init-list,
+    -modernize-use-trailing-return-type,
+    -performance-enum-size,
+    -readability-redundant-declaration,
+    -readability-identifier-naming,
+    -bugprone-easily-swappable-parameters,
+
+HeaderFilterRegex: "kernel|mkfs|user"
+
