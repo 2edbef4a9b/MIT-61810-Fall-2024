@@ -15,7 +15,16 @@
 
 ## Introduction
 
-In this lab, we will
+In this lab, we use GDB to debug the xv6 kernel and user programs, implement a system call `trace`, and explore a security vulnerability in the xv6 kernel. We will also implement a user program that exploits this vulnerability to retrieve a secret password.
+
+## Setup
+
+To access the source code and run the programs:
+
+```bash
+cd Xv6-RISCV
+git checkout syscall
+```
 
 ## Using GDB
 
@@ -88,11 +97,11 @@ Corresponding assembly codes in `kernel/kernel.asm`:
 
 ```assembly
   struct proc *p = myproc();
-    80002a0c:	a9dfe0ef          	jal	800014a8 <myproc>
-    80002a10:	84aa                	mv	s1,a0
+    80002a0c: a9dfe0ef           jal 800014a8 <myproc>
+    80002a10: 84aa                 mv s1,a0
 
   num = * (int *) 0;
-    80002a12:	00002683          	lw	a3,0(zero) # 0 <_entry-0x80000000>
+    80002a12: 00002683           lw a3,0(zero) # 0 <_entry-0x80000000>
 ```
 
 Write down the assembly instruction the kernel is panicing at. Which register corresponds to the variable `num`?
@@ -121,3 +130,143 @@ $3 = 1
 > `initcode`, 1
 
 ## System Call Tracing
+
+In this part of the lab, we implemented a system call tracing feature for the xv6 operating system. The goal was to allow users and developers to observe which system calls are invoked by a process, along with their return values, for debugging and educational purposes.
+
+**Source Code Location:**
+
+* Kernel changes: `/kernel/syscall.c`, `/kernel/sysproc.c`, `/kernel/proc.h`
+* User program: `/user/trace.c`
+
+**Key Features:**
+
+* Added a new system call `trace` that enables or disables tracing for a process.
+* Modified the kernel’s system call dispatcher to print the system call name, process id, and return value when tracing is enabled.
+* Used a bitmask to allow selective tracing of specific system calls.
+* Provided a user-level program `trace` to set the tracing mask for a process and its children.
+
+**Usage:**
+
+```bash
+$ trace 32 grep hello README
+3: syscall read -> 1023
+3: syscall read -> 966
+3: syscall read -> 70
+3: syscall read -> 0
+$
+$ trace 2147483647 grep hello README
+4: syscall trace -> 0
+4: syscall exec -> 3
+4: syscall open -> 3
+4: syscall read -> 1023
+4: syscall read -> 966
+4: syscall read -> 70
+4: syscall read -> 0
+4: syscall close -> 0
+$
+$ grep hello README
+$
+$ trace 2 usertests forkforkfork
+usertests starting
+test forkforkfork: 407: syscall fork -> 408
+408: syscall fork -> 409
+409: syscall fork -> 410
+410: syscall fork -> 411
+409: syscall fork -> 412
+410: syscall fork -> 413
+409: syscall fork -> 414
+411: syscall fork -> 415
+...
+$
+```
+
+## Attack Xv6
+
+For this lab, a deliberate bug is introduced: when a user process requests new memory pages, the kernel does not clear the contents of those pages before handing them out. As a result, newly allocated memory may contain leftover data from previous processes.
+
+The `secret` program in `user/secret.c` allocates a large chunk of heap memory (32 pages) using `sbrk`, then advances the pointer by 9 pages. It then writes a secret message to the start of the 10th page and appends a 8-byte password to it at offset 32 bytes.
+
+```c
+char *end = sbrk(PGSIZE * 32);
+end = end + 9 * PGSIZE;
+strcpy(end, "my very very very secret pw is:   ");
+strcpy(end + 32, argv[1]);
+```
+
+Since the kernel does not clear the memory contents before reallocation, this creates an important security vulnerability. When the `secret` program exits, its allocated pages are freed and returned to the kernel's memory pool, The page contents remain intact (including both the pattern string and secret password).
+
+However the first 8 bytes in the freed pages will be overwritten with a freelist pointer when added to the free list. This behavior can be found in `kernel/kalloc.c`:
+
+```c
+void
+kfree(void *pa)
+{
+  struct run *r;
+
+  // Existing codes ...
+
+  r = (struct run*)pa;
+
+  acquire(&kmem.lock);
+  r->next = kmem.freelist;
+  kmem.freelist = r;  // Add the freed page to the free list.
+  release(&kmem.lock);
+}
+```
+
+The first 8 bytes of freed pages are overwritten with a freelist pointer due to how the memory management structures are designed in xv6. In `kernel/kalloc.c`, the kernel defines a `struct run` that serves as the fundamental unit for tracking free memory pages. The structure is defined as:
+
+```c
+struct run {
+  struct run *next;
+};
+```
+
+This minimal structure contains just a single `next` pointer that points to the next free page in the list. On a 64-bit system architecture (which xv6 is configured for by default), each pointer occupies exactly 8 bytes of memory.
+
+The assignment `r->next = kmem.freelist` writes the current head of the free list into the `next` field of the newly freed page, which occupies the first 8 bytes of that physical page.
+
+Based on the above information, we can exploit this vulnerability by the following steps:
+
+1\. Running the `secret` user program and write the pattern and the password to a page in memory.
+
+2\. Running the `attack` user program immediately after `secret` exits.
+
+3\. In `attack`, we allocate a large chunk of heap memory using `sbrk`, and iterate through the pages to find the page that contains the pattern string with:
+
+```c
+if (memcmp(ptr + 8, pattern + 8, 24) == 0)
+```
+
+where `ptr` is the page pointer, `pattern` is the pattern string, and `8` is the offset to skip the freelist pointer.
+
+4\. Once the page is found, we can extract the password at `ptr + 32`, and write to fd 2.
+
+```c
+char *secret_addr = ptr + 32;
+write(2, secret_addr, 8);
+exit(0);
+```
+
+`user/secret.c` copies the secret bytes to memory whose address is 32 bytes after the start of a page. Change the 32 to 0 and you should see that your attack doesn't work anymore; why not?
+
+> If we change the offset from 32 to 0, the password will be written at the start of the page, which will be overwritten by the freelist pointer when the page is freed.
+
+## Key Learning Outcomes
+
+* **System Call Implementation:** Gained hands-on experience in adding new system calls to the xv6 kernel and understanding the system call dispatch mechanism.
+* **Kernel and User Debugging:** Learned to use GDB to debug both user programs and kernel code, including analyzing kernel panics and process state.
+* **Process Isolation and Security:** Explored how improper memory management in the kernel can lead to security vulnerabilities, and understood the importance of clearing memory before reallocation.
+* **Bitmask and Tracing Techniques:** Practiced using bitmasks for selective system call tracing and developed tools to observe kernel-user interactions.
+* **Memory Management Internals:** Investigated how xv6 manages physical and virtual memory, including the use of free lists and the implications for security.
+
+## Challenges and Solutions
+
+* **Understanding Kernel Data Structures:** It was challenging to trace how memory pages are managed and reused in xv6. Careful reading of the kernel source and use of GDB helped clarify the flow of memory allocation and freeing.
+* **Debugging Across User and Kernel Space:** Debugging issues that span user and kernel space required learning how to interpret trapframes, process states, and memory mappings using GDB.
+* **Correct Bitmask Handling:** Ensuring that the correct system call numbers were mapped to the correct bits in the tracing mask required attention to detail and testing with various system calls.
+* **Exploiting the Vulnerability Reliably:** Crafting the attack to reliably recover the secret required understanding the freelist pointer overwrite and adjusting the scanning logic to skip the first 8 bytes of each page.
+
+## Conclusion
+
+Lab 02 provided practical experience with the implementation and debugging of system calls in xv6, as well as a deeper understanding of kernel memory management and process isolation. By tracing system calls and exploiting a deliberate vulnerability, we saw firsthand how small bugs in the kernel can have significant security consequences. The lab reinforced the importance of careful kernel programming and provided valuable skills in debugging, kernel development, and
