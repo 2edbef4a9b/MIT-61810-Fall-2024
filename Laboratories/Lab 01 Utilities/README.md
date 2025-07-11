@@ -15,7 +15,7 @@
 
 ## Introduction
 
-In this lab, we implemented several user programs for the xv6 operating system to familiarize ourselves with system calls, inter-process communication (IPC), file system operations, and basic Unix utilities. The lab consists of implementing five programs: `sleep`, `pingpong`, `primes`, `find`, and `xargs`.
+In this lab, we implement several user programs for the xv6 operating system to familiarize ourselves with system calls, inter-process communication (IPC), file system operations, and basic Unix utilities. The lab consists of implementing five programs: `sleep`, `pingpong`, `primes`, `find`, and `xargs`.
 
 ## Setup
 
