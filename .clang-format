@@ -16,5 +16,6 @@ BraceWrapping:
   AfterNamespace: false
   BeforeCatch: false
   BeforeElse: false
-SpaceBeforeParens: ControlStatements
+SpaceBeforeParens: Never
 SpaceInEmptyParentheses: false
+SortIncludes: false
