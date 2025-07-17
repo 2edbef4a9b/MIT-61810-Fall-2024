@@ -324,12 +324,18 @@ This lab provided hands-on experience in building a basic network stack within a
 
 Implementing the networking stack in xv6 presented several challenges:
 
-* **Understanding E1000 Hardware:** Deciphering the E1000 device specification and register layout to correctly initialize the device and manage the transmit and receive rings. Solution: Carefully studying the E1000 documentation and the provided `e1000_dev.h` definitions.
-* **Correct Ring Buffer Management:** Implementing the logic for adding packets to the TX ring and processing received packets from the RX ring, including updating head/tail pointers and handling descriptor status bits. Ensuring proper synchronization with the hardware. Solution: Following the E1000 ring buffer model described in the documentation and using spinlocks to protect shared state.
-* **Packet Buffer Ownership and Lifetime:** Managing the allocation and freeing of packet buffers across different layers of the network stack (driver, IP layer, UDP layer, socket queue, system call). Ensuring buffers are freed exactly once to prevent memory leaks or double frees. Solution: Carefully tracing the ownership of buffers and implementing `kfree` calls at the appropriate points (e.g., after transmission is complete, when a packet is dropped, after a packet is received by a user process, when a socket is freed).
-* **Synchronization Issues:** Protecting shared data structures (like the `e1000_lock`, `bindmap_lock`, `sockets_lock`, and individual `sock->lock`) from race conditions between the interrupt handler and user processes making system calls. Solution: Consistently acquiring and releasing the appropriate spinlocks before accessing shared data.
-* **Implementing Network Protocols:** Correctly parsing packet headers and implementing the basic logic for ARP, IP, and UDP. This involved understanding network byte order and using functions like `ntohs` and `ntohl`. Solution: Referencing network protocol specifications and using the provided byte swap functions.
-* **Socket Queue Implementation:** Building a thread-safe queue for received packets for each socket and integrating it with the `sleep`/`wakeup` mechanism to allow user processes to block until data arrives. Solution: Implementing a circular buffer (or linked list) with a spinlock and using `sleep` and `wakeup` on the socket structure.
+* **Understanding E1000 Hardware:** Deciphering the E1000 device specification and register layout to correctly initialize the device and manage the transmit and receive rings. 
+* **Solution**: Carefully studying the E1000 documentation and the provided `e1000_dev.h` definitions.
+* **Correct Ring Buffer Management:** Implementing the logic for adding packets to the TX ring and processing received packets from the RX ring, including updating head/tail pointers and handling descriptor status bits. Ensuring proper synchronization with the hardware. 
+* **Solution**: Following the E1000 ring buffer model described in the documentation and using spinlocks to protect shared state.
+* **Packet Buffer Ownership and Lifetime:** Managing the allocation and freeing of packet buffers across different layers of the network stack (driver, IP layer, UDP layer, socket queue, system call). Ensuring buffers are freed exactly once to prevent memory leaks or double frees. 
+* **Solution**: Carefully tracing the ownership of buffers and implementing `kfree` calls at the appropriate points (e.g., after transmission is complete, when a packet is dropped, after a packet is received by a user process, when a socket is freed).
+* **Synchronization Issues:** Protecting shared data structures (like the `e1000_lock`, `bindmap_lock`, `sockets_lock`, and individual `sock->lock`) from race conditions between the interrupt handler and user processes making system calls. 
+* **Solution**: Consistently acquiring and releasing the appropriate spinlocks before accessing shared data.
+* **Implementing Network Protocols:** Correctly parsing packet headers and implementing the basic logic for ARP, IP, and UDP. This involved understanding network byte order and using functions like `ntohs` and `ntohl`. 
+* **Solution**: Referencing network protocol specifications and using the provided byte swap functions.
+* **Socket Queue Implementation:** Building a thread-safe queue for received packets for each socket and integrating it with the `sleep`/`wakeup` mechanism to allow user processes to block until data arrives. 
+* **Solution**: Implementing a circular buffer (or linked list) with a spinlock and using `sleep` and `wakeup` on the socket structure.
 * **Memory Leaks in Socket Queues:** A specific challenge was ensuring that packet buffers queued in a socket's receive queue are freed when the socket is unbound, even if the user process hasn't called `recv` for all packets. Solution: Implementing logic in `freesock` to iterate through the queue and `kfree` any remaining packet buffers.
 
 ## Conclusion
