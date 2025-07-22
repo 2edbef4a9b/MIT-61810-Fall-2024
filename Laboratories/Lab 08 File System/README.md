@@ -228,7 +228,7 @@ By implementing both the creation and resolution logic, we have integrated full-
 * `kernel/stat.h`: Contains the new file type `T_SYMLINK` definition.
 * `kernel/syscall.c`, `kernel/syscall.h`, `kernel/user.h`, `user/usys.pl`: Contains the new system call registration and user-space interface for `symlink`.
 
-### Key Learning Outcomes
+## Key Learning Outcomes
 
 These labs provided a deep, hands-on understanding of core file system concepts and the engineering challenges involved in extending a kernel's capabilities.
 
@@ -239,7 +239,7 @@ These labs provided a deep, hands-on understanding of core file system concepts 
 * **Resource Management and Atomicity**: Gained critical experience in managing kernel resources (inodes, file descriptors, disk blocks) within transactional boundaries (`begin_op`/`end_op`). This highlighted the importance of ensuring that all resources are correctly allocated and, crucially, deallocated, especially on failure paths.
 * **Defensive Programming in the Kernel**: Learned the importance of writing robust kernel code that anticipates and correctly handles edge cases and potential errors, such as circular symlinks, dangling links, and out-of-space conditions during multi-step operations.
 
-### Challenges and Solutions
+## Challenges and Solutions
 
 Implementing these file system features exposed several classic and subtle kernel programming challenges, primarily related to resource management and the robustness of error-handling paths.
 
@@ -252,6 +252,6 @@ Implementing these file system features exposed several classic and subtle kerne
 * **Handling Circular Symbolic Links**: A naive implementation of symlink following would enter an infinite loop if faced with a circular link (e.g., a -> b, b -> a).
 * **Solution**: We implemented a simple but effective loop counter within the `sys_open` resolution logic. If the number of symbolic link traversals exceeds a reasonable limit (e.g., 10), the operation is aborted, and an error is returned to the user, preventing a kernel hang or stack overflow.
 
-### Conclusion
+## Conclusion
 
 This lab was a deep dive into the practical engineering of a UNIX-like file system. By implementing support for large files and symbolic links, we moved xv6 from a basic teaching tool closer to a functionally recognizable operating system. The challenges encountered, particularly in ensuring robust error handling and preventing subtle race conditions during path resolution, were profound learning experiences. They underscored that in kernel development, correct resource management across all code paths—especially failure paths—is paramount for system stability. The final, functional file system is a testament to the careful, defensive, and structured programming required to build reliable OS components.
