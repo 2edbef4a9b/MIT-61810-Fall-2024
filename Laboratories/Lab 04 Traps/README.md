@@ -375,7 +375,7 @@ int main() {
 }
 ```
 
-### Key Learning Outcomes
+## Key Learning Outcomes
 
 This lab provided a deep dive into the core mechanisms of an operating system, particularly focusing on traps and the interaction between user space and the kernel. Key learning outcomes include:
 
@@ -388,7 +388,7 @@ This lab provided a deep dive into the core mechanisms of an operating system, p
 * **Preventing Re-entrancy:** Implementing logic to prevent a signal handler from being interrupted by another instance of the same signal, which is a common requirement in signal handling.
 * **System Call Implementation:** Gaining experience in adding new system calls (`sigalarm`, `sigreturn`) to the xv6 kernel, including argument parsing and integrating them with kernel data structures and logic.
 
-### Challenges and Solutions
+## Challenges and Solutions
 
 Implementing the traps lab involved several challenges:
 
@@ -399,6 +399,6 @@ Implementing the traps lab involved several challenges:
 * **Preventing Re-entrant Handlers:** The `in_handler` flag was introduced specifically to solve the problem of a handler being interrupted by another alarm before it could finish and call `sigreturn`. This simple flag effectively serializes handler execution.
 * **Seamless Context Switching:** The core challenge in the alarm was making the transition to and from the user handler appear seamless to the interrupted user program. This was achieved by meticulously saving the original `trapframe` and restoring it in `sys_sigreturn`, ensuring the `epc`, `sp`, and all user registers return to their state before the alarm.
 
-### Conclusion
+## Conclusion
 
 Lab 04 provided essential hands-on experience with the fundamental concepts of operating system traps, user-kernel interaction, and process context management on the RISC-V architecture. By implementing the `backtrace` and alarm mechanisms, we solidified our understanding of stack frames, calling conventions, interrupt handling, and the critical process of saving and restoring user state. The alarm implementation, in particular, highlighted the complexities of asynchronous event delivery and the need for careful state management within the kernel to support user-level signal handling. This lab served as a crucial step in understanding how an operating system manages the execution environment of user programs and responds to hardware events.

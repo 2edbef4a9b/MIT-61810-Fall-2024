@@ -334,7 +334,7 @@ copyout(pagetable_t pagetable, uint64 dstva, char *src, uint64 len)
 * `kernel/trap.c`: Contains the `handle_cow` function to handle COW page faults.
 * `kernel/defs.h`: Contains the declaration of `handle_cow`.
 
-### Key Learning Outcomes
+## Key Learning Outcomes
 
 This lab provided a deep dive into advanced virtual memory management techniques, specifically focusing on the Copy-on-Write (COW) fork mechanism. Key learning outcomes include:
 
@@ -344,7 +344,7 @@ This lab provided a deep dive into advanced virtual memory management techniques
 * **Copy-on-Write Logic:** Understanding the core COW principle: sharing pages initially and only copying them when a write attempt occurs on a shared page. Implementing the COW break logic in `handle_cow` and `copyout`.
 * **Interplay of OS Components:** Observing how different parts of the OS (process management, memory allocation, trap handling, system calls like `fork` and `exec`) interact and need to be coordinated to support COW.
 
-### Challenges and Solutions
+## Challenges and Solutions
 
 Implementing the COW fork mechanism presented several challenges:
 
@@ -354,6 +354,6 @@ Implementing the COW fork mechanism presented several challenges:
 * **Integrating with `copyout`:** Recognizing that `copyout` also performs writes to user memory and needs to trigger the COW break mechanism was important. Modifying `copyout` to check for `PTE_COW` and perform the necessary copy logic was required.
 * **Debugging Page Table Issues:** Debugging page table manipulation and trap handling often involves examining register values (`scause`, `stval`, `sepc`) and page table entries, which can be complex. Using print statements and GDB was essential for tracing execution flow and identifying incorrect PTE states or memory accesses.
 
-### Conclusion
+## Conclusion
 
 Lab 05 provided valuable practical experience in implementing a fundamental operating system optimization: Copy-on-Write fork. By deferring the copying of memory pages until they are actually modified, COW significantly improves the performance of `fork` by reducing memory consumption and CPU overhead. This lab reinforced our understanding of virtual memory concepts, page table management, and the critical role of trap handling in responding to memory access events. Implementing the reference counting and integrating the COW logic into the existing xv6 memory management and trap handling code demonstrated the interconnectedness of different OS components and the challenges involved in building efficient and correct memory sharing mechanisms.
