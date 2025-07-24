@@ -116,9 +116,7 @@ ksteal(int stealer)
 
   total_stolen = 0;
 
-  for(cpu = 0; cpu < NCPU; cpu++){
-    if(cpu == stealer)
-      continue; // Skip self.
+  for(cpu = (stealer + 1) % NCPU; cpu != stealer; cpu = (cpu + 1) % NCPU){
     acquire(&kmem[cpu].lock);
     start = kmem[cpu].freelist;
     end = start;
