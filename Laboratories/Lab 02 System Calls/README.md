@@ -44,13 +44,19 @@ riscv64-linux-gnu-gdb
 (gdb) target remote localhost:26000
 ```
 
+![Image 01 Qemu GDB](../../Images/Lab%2002%20System%20Calls/Image%2001%20Qemu%20GDB.png)
+
 Looking at the backtrace output, which function called `syscall` ?
 
 > `usertrap`
 
+![Image 02 Backtrace](../../Images/Lab%2002%20System%20Calls/Image%2002%20Backtrace.png)
+
 What is the value of `p->trapframe->a7` and what does that value represent? (Hint: look `user/initcode.S`, the first user program xv6 starts.)
 
 > 7, `SYS_exit`, which is the system call number for `exit`.
+
+![Image 03 Trapframe](../../Images/Lab%2002%20System%20Calls/Image%2003%20Trapframe.png)
 
 What was the previous mode that the CPU was in?
 
@@ -93,6 +99,8 @@ panic: kerneltrap
 
 where `sepc=0x80002a12` is the Supervisor Exception Program Counter, the address of the instruction that caused the exception.
 
+![Image 04 Kernel Panic](../../Images/Lab%2002%20System%20Calls/Image%2004%20Kernel%20Panic.png)
+
 Corresponding assembly codes in `kernel/kernel.asm`:
 
 ```assembly
@@ -112,7 +120,7 @@ Why does the kernel crash? Hint: look at figure 3-3 in the text; is address 0 ma
 
 The `scause` value is `0xd` (decimal 13), which indicates a "Load Page Fault" exception according to the RISC-V privileged specification.
 
-![Memory Map](../../Images/Lab%2002%20System%20Calls/image.png)
+![Image 05 Memory Map](../../Images/Lab%2002%20System%20Calls/Image%2005%20Memory%20Map.png)
 
 Address 0 is not mapped in the kernel address space, which is why the kernel panics when trying to load from it. The `scause` value confirms that a page fault occurred, indicating that the kernel attempted to access an invalid memory address.
 
@@ -128,6 +136,8 @@ $3 = 1
 ```
 
 > `initcode`, 1
+
+![Image 06 Process Info](../../Images/Lab%2002%20System%20Calls/Image%2006%20Process%20Info.png)
 
 ## System Call Tracing
 
