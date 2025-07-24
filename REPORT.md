@@ -55,8 +55,6 @@ git clone https://github.com/2edbef4a9b/MIT-61810-Fall-2024.git
 
 ## 目录
 
-## 目录
-
 * [Lab 00 Setup](#lab-00-setup)
   * [Introduction](#lab-00-setup-introduction)
   * [Install Toolchain](#lab-00-setup-install-toolchain)
@@ -93,7 +91,7 @@ git clone https://github.com/2edbef4a9b/MIT-61810-Fall-2024.git
   * [Setup](#lab-03-page-tables-setup)
   * [Inspect Page Tables](#lab-03-page-tables-inspect-page-tables)
   * [Speed Up System Calls](#lab-03-page-tables-speed-up-system-calls)
-    * [The USYSCALL Page Mechanism](#lab-03-page-tables-the-usyscall-page-mechanism)
+    * [The `USYSCALL` Page Mechanism](#the-usyscall-page-mechanism)
   * [Print a Page Table](#lab-03-page-tables-print-a-page-table)
   * [Superpage Support](#lab-03-page-tables-superpage-support)
     * [Superpage Allocation Mechanism](#lab-03-page-tables-superpage-allocation-mechanism)
@@ -124,13 +122,13 @@ git clone https://github.com/2edbef4a9b/MIT-61810-Fall-2024.git
   * [Introduction](#lab-06-networking-introduction)
   * [Setup](#lab-06-networking-setup)
   * [NIC Driver](#lab-06-networking-nic-driver)
-    * [Packet Transmission (e1000_transmit)](#lab-06-networking-packet-transmission-e1000_transmit)
-    * [Packet Reception (e1000_recv)](#lab-06-networking-packet-reception-e1000_recv)
+    * [Packet Transmission (`e1000_transmit`)](#packet-transmission-e1000transmit)
+    * [Packet Reception (`e1000_recv`)](#packet-reception-e1000recv)
   * [UDP Packet Receive](#lab-06-networking-udp-packet-receive)
-    * [Network Layer Receive (net_rx, ip_rx)](#lab-06-networking-network-layer-receive-net_rx-ip_rx)
-    * [UDP Receive Processing (udp_rx)](#lab-06-networking-udp-receive-processing-udp_rx)
-    * [Receiving Data in User Space (sys_recv)](#lab-06-networking-receiving-data-in-user-space-sys_recv)
-    * [Socket Management (allocsock, freesock)](#lab-06-networking-socket-management-allocsock-freesock)
+    * [Network Layer Receive (`net_rx`, `ip_rx`)](#network-layer-receive-netrx-iprx)
+    * [UDP Receive Processing (`udp_rx`)](#udp-receive-processing-udprx)
+    * [Receiving Data in User Space (`sys_recv`)](#receiving-data-in-user-space-sysrecv)
+    * [Socket Management (`allocsock`, `freesock`)](#socket-management-allocsock-freesock)
   * [Relevant Files](#lab-06-networking-relevant-files)
   * [Key Learning Outcomes](#lab-06-networking-key-learning-outcomes)
   * [Challenges and Solutions](#lab-06-networking-challenges-and-solutions)
@@ -155,11 +153,11 @@ git clone https://github.com/2edbef4a9b/MIT-61810-Fall-2024.git
   * [Introduction](#lab-08-file-system-introduction)
   * [Setup](#lab-08-file-system-setup)
   * [Large Files](#lab-08-file-system-large-files)
-    * [Supporting Double Indirect Blocks in bmap](#lab-08-file-system-supporting-double-indirect-blocks-in-bmap)
-    * [Freeing Double Indirect Blocks in itrunc](#lab-08-file-system-freeing-double-indirect-blocks-in-itrunc)
+    * [Supporting Double Indirect Blocks in `bmap`](#supporting-double-indirect-blocks-in-bmap)
+    * [Freeing Double Indirect Blocks in `itrunc`](#freeing-double-indirect-blocks-in-itrunc)
   * [Symbolic Links](#lab-08-file-system-symbolic-links)
-    * [sys_symlink System Call](#lab-08-file-system-syssymlink-system-call)
-    * [Following Symbolic Links in sys_open](#lab-08-file-system-following-symbolic-links-in-sys_open)
+    * [`sys_symlink` System Call](#syssymlink-system-call)
+    * [Following Symbolic Links in `sys_open`](#following-symbolic-links-in-sysopen)
   * [Relevant Files](#lab-08-file-system-relevant-files)
   * [Key Learning Outcomes](#lab-08-file-system-key-learning-outcomes)
   * [Challenges and Solutions](#lab-08-file-system-challenges-and-solutions)
@@ -168,17 +166,17 @@ git clone https://github.com/2edbef4a9b/MIT-61810-Fall-2024.git
   * [Introduction](#lab-09-mmap-introduction)
   * [Setup](#lab-09-mmap-setup)
   * [Overview](#lab-09-mmap-overview)
-    * [mmap and munmap System Calls](#lab-09-mmap-mmap-and-munmap-system-calls)
+    * [`mmap` and `munmap` System Calls](#mmap-and-munmap-system-calls)
     * [Implemented Features](#lab-09-mmap-implemented-features)
   * [Virtual Memory Area (VMA)](#lab-09-mmap-virtual-memory-area-vma)
     * [The VMA Structure](#lab-09-mmap-the-vma-structure)
-    * [Fixed Array in struct proc](#lab-09-mmap-fixed-array-in-struct-proc)
+    * [Fixed Array in struct `proc`](#fixed-array-in-struct-proc)
     * [Pre-defined Virtual Address Slots](#lab-09-mmap-pre-defined-virtual-address-slots)
     * [Simplified VMA Management](#lab-09-mmap-simplified-vma-management)
-  * [Kernel Support for mmap](#lab-09-mmap-kernel-support-for-mmap)
-    * [mmap and munmap Implementation](#lab-09-mmap-mmap-and-munmap-implementation)
+  * [Kernel Support for `mmap`](#kernel-support-for-mmap)
+    * [`mmap` and `munmap` Implementation](#mmap-and-munmap-implementation)
     * [Page Fault Handling](#lab-09-mmap-page-fault-handling)
-    * [VMA Handling in fork() and exit()](#lab-09-mmap-vma-handling-in-fork-and-exit)
+    * [VMA Handling in `fork()` and `exit()`](#vma-handling-in-fork-and-exit)
   * [Relevant Files](#lab-09-mmap-relevant-files)
   * [Key Learning Outcomes](#lab-09-mmap-key-learning-outcomes)
   * [Challenges and Solutions](#lab-09-mmap-challenges-and-solutions)
@@ -200,11 +198,11 @@ git clone https://github.com/2edbef4a9b/MIT-61810-Fall-2024.git
 
 # Lab 00 Setup
 
-## Introduction
+<h2 id="lab-00-setup-introduction">Introduction</h2>
 
 本部分内容说明了 Xv6 RISCV 的实验环境搭建过程, 包括所需工具的安装和配置, Xv6 RISCV 实验代码的获取, 编译和运行等步骤, 主要参考 [MIT 6.1810 工具安装指南](https://pdos.csail.mit.edu/6.1810/2024/tools.html)
 
-## Install Toolchain
+<h2 id="lab-00-setup-install-toolchain">Install Toolchain</h2>
 
 由于我使用的是 Arch Linux 系统, 所以直接使用 `pacman` 安装工具链即可:
 
@@ -219,11 +217,11 @@ qemu-system-riscv64 --version
 riscv64-linux-gnu-gcc --version
 ```
 
-![Image 01 Toolchain](../../Images/Lab%2000%20Setup/Image%2001%20Toolchain.png)
+![Image 01 Toolchain](./Images/Lab%2000%20Setup/Image%2001%20Toolchain.png)
 
 对于其他操作系统, [MIT 6.1810 工具安装指南](https://pdos.csail.mit.edu/6.1810/2024/tools.html) 中均有说明.
 
-## Get Xv6 RISCV Source Code
+<h2 id="lab-00-setup-get-xv6-riscv-source-code">Get Xv6 RISCV Source Code</h2>
 
 使用 Git 获取 Xv6 RISCV 实验代码:
 
@@ -239,9 +237,9 @@ git fetch origin
 git checkout pgtbl
 ```
 
-![Image 02 Xv6 Source](../../Images/Lab%2000%20Setup/Image%2002%20Xv6%20Source.png)
+![Image 02 Xv6 Source](./Images/Lab%2000%20Setup/Image%2002%20Xv6%20Source.png)
 
-## Compile and Run
+<h2 id="lab-00-setup-compile-and-run">Compile and Run</h2>
 
 在一个分支下编译和运行 Xv6 RISCV 实验代码:
 
@@ -249,7 +247,7 @@ git checkout pgtbl
 make qemu
 ```
 
-![Image 03 Compile](../../Images/Lab%2000%20Setup/Image%2003%20Compile.png)
+![Image 03 Compile](./Images/Lab%2000%20Setup/Image%2003%20Compile.png)
 
 运行 autograder 测试:
 
@@ -257,15 +255,15 @@ make qemu
 make grade
 ```
 
-![Image 04 Autograder](../../Images/Lab%2000%20Setup/Image%2004%20Autograder.png)
+![Image 04 Autograder](./Images/Lab%2000%20Setup/Image%2004%20Autograder.png)
 
 # Lab 01 Utilities
 
-## Introduction
+<h2 id="lab-01-utilities-introduction">Introduction</h2>
 
 In this lab, we implement several user programs for the xv6 operating system to familiarize ourselves with system calls, inter-process communication (IPC), file system operations, and basic Unix utilities. The lab consists of implementing five programs: `sleep`, `pingpong`, `primes`, `find`, and `xargs`.
 
-## Setup
+<h2 id="lab-01-utilities-setup">Setup</h2>
 
 To access the source code and run the programs:
 
@@ -274,7 +272,7 @@ cd Xv6-RISCV
 git checkout util
 ```
 
-## Boot Xv6
+<h2 id="lab-01-utilities-boot-xv6">Boot Xv6</h2>
 
 To start the xv6 operating system, we use the following commands:
 
@@ -284,9 +282,9 @@ make qemu
 
 This compiles the xv6 kernel and boots it in QEMU emulator. Once booted, we can run our implemented utilities in the xv6 shell.
 
-## Implemented Programs
+<h2 id="lab-01-utilities-implemented-programs">Implemented Programs</h2>
 
-### 01. Sleep Program
+<h3 id="lab-01-utilities-01-sleep-program">01. Sleep Program</h3>
 
 **Source Code Location:** `/user/sleep.c`
 
@@ -304,7 +302,7 @@ The `sleep` program pauses execution for a specified number of clock ticks.
 sleep 10
 ```
 
-### 02. Pingpong Program
+<h3 id="lab-01-utilities-02-pingpong-program">02. Pingpong Program</h3>
 
 **Source Code Location:** `/user/pingpong.c`
 
@@ -325,7 +323,7 @@ $ pingpong
 3: received pong
 ```
 
-### 03. Primes Program
+<h3 id="lab-01-utilities-03-primes-program">03. Primes Program</h3>
 
 **Source Code Location:** `/user/primes.c`
 
@@ -349,7 +347,7 @@ prime 7
 ...
 ```
 
-### 04. Find Program
+<h3 id="lab-01-utilities-04-find-program">04. Find Program</h3>
 
 **Source Code Location:** `/user/find.c`
 
@@ -369,7 +367,7 @@ $ find . README
 ./README
 ```
 
-### 05. Xargs Program
+<h3 id="lab-01-utilities-05-xargs-program">05. Xargs Program</h3>
 
 **Source Code Location:** `/user/xargs.c`
 
@@ -395,7 +393,7 @@ $ (echo 1 ; echo 2) | xargs echo
 2
 ```
 
-## Running the Programs
+<h2 id="lab-01-utilities-running-the-programs">Running the Programs</h2>
 
 After booting xv6 with `make qemu`, you can run each program directly in the xv6 shell:
 
@@ -417,7 +415,7 @@ $ echo hello | xargs echo world
 $ (echo 1; echo 2) | xargs echo
 ```
 
-## System Calls Learned
+<h2 id="lab-01-utilities-system-calls-learned">System Calls Learned</h2>
 
 Throughout this lab, we utilized various xv6 system calls:
 
@@ -427,7 +425,7 @@ Throughout this lab, we utilized various xv6 system calls:
 * **Inter-Process Communication:** `pipe()`
 * **Utility Functions:** `sleep()`, `atoi()`, `strcmp()`, `strcpy()`
 
-## Key Learning Outcomes
+<h2 id="lab-01-utilities-key-learning-outcomes">Key Learning Outcomes</h2>
 
 1. **System Call Interface:** Understanding how user programs interact with the kernel through system calls
 2. **Process Management:** Learning process creation, synchronization, and communication
@@ -435,24 +433,24 @@ Throughout this lab, we utilized various xv6 system calls:
 4. **Inter-Process Communication:** Implementing communication between processes using pipes
 5. **Error Handling:** Proper error checking and resource management in system programming
 
-## Challenges and Solutions
+<h2 id="lab-01-utilities-challenges-and-solutions">Challenges and Solutions</h2>
 
 1. **Pipe Management:** Ensuring proper closing of unused pipe ends to avoid deadlocks
 2. **Memory Management:** Careful buffer management and avoiding buffer overflows
 3. **Process Synchronization:** Proper use of `wait()` to ensure child processes complete
 4. **Argument Parsing:** Handling variable numbers of arguments and proper string manipulation
 
-## Conclusion
+<h2 id="lab-01-utilities-conclusion">Conclusion</h2>
 
 This lab provided hands-on experience with fundamental Unix system programming concepts. By implementing these utilities, we gained practical knowledge of process management, file system operations, and inter-process communication in the xv6 operating system environment.
 
 # Lab 02 System Calls
 
-## Introduction
+<h2 id="lab-02-system-calls-introduction">Introduction</h2>
 
 In this lab, we use GDB to debug the xv6 kernel and user programs, implement a system call `trace`, and explore a security vulnerability in the xv6 kernel. We will also implement a user program that exploits this vulnerability to retrieve a secret password.
 
-## Setup
+<h2 id="lab-02-system-calls-setup">Setup</h2>
 
 To access the source code and run the programs:
 
@@ -461,9 +459,9 @@ cd Xv6-RISCV
 git checkout syscall
 ```
 
-## Using GDB
+<h2 id="lab-02-system-calls-using-gdb">Using GDB</h2>
 
-### Debugging xv6
+<h3 id="lab-02-system-calls-debugging-xv6">Debugging xv6</h3>
 
 To debug xv6, we can use GDB with the following command:
 
@@ -479,19 +477,19 @@ riscv64-linux-gnu-gdb
 (gdb) target remote localhost:26000
 ```
 
-![Image 01 Qemu GDB](../../Images/Lab%2002%20System%20Calls/Image%2001%20Qemu%20GDB.png)
+![Image 01 Qemu GDB](./Images/Lab%2002%20System%20Calls/Image%2001%20Qemu%20GDB.png)
 
 Looking at the backtrace output, which function called `syscall` ?
 
 > `usertrap`
 
-![Image 02 Backtrace](../../Images/Lab%2002%20System%20Calls/Image%2002%20Backtrace.png)
+![Image 02 Backtrace](./Images/Lab%2002%20System%20Calls/Image%2002%20Backtrace.png)
 
 What is the value of `p->trapframe->a7` and what does that value represent? (Hint: look `user/initcode.S`, the first user program xv6 starts.)
 
 > 7, `SYS_exit`, which is the system call number for `exit`.
 
-![Image 03 Trapframe](../../Images/Lab%2002%20System%20Calls/Image%2003%20Trapframe.png)
+![Image 03 Trapframe](./Images/Lab%2002%20System%20Calls/Image%2003%20Trapframe.png)
 
 What was the previous mode that the CPU was in?
 
@@ -507,7 +505,7 @@ $4 = 0x200000022
 
 > User mode
 
-### Debugging Kernel Panic
+<h3 id="lab-02-system-calls-debugging-kernel-panic">Debugging Kernel Panic</h3>
 
 ```diff
 In kernel/syscall.c
@@ -534,7 +532,7 @@ panic: kerneltrap
 
 where `sepc=0x80002a12` is the Supervisor Exception Program Counter, the address of the instruction that caused the exception.
 
-![Image 04 Kernel Panic](../../Images/Lab%2002%20System%20Calls/Image%2004%20Kernel%20Panic.png)
+![Image 04 Kernel Panic](./Images/Lab%2002%20System%20Calls/Image%2004%20Kernel%20Panic.png)
 
 Corresponding assembly codes in `kernel/kernel.asm`:
 
@@ -555,7 +553,7 @@ Why does the kernel crash? Hint: look at figure 3-3 in the text; is address 0 ma
 
 The `scause` value is `0xd` (decimal 13), which indicates a "Load Page Fault" exception according to the RISC-V privileged specification.
 
-![Image 05 Memory Map](../../Images/Lab%2002%20System%20Calls/Image%2005%20Memory%20Map.png)
+![Image 05 Memory Map](./Images/Lab%2002%20System%20Calls/Image%2005%20Memory%20Map.png)
 
 Address 0 is not mapped in the kernel address space, which is why the kernel panics when trying to load from it. The `scause` value confirms that a page fault occurred, indicating that the kernel attempted to access an invalid memory address.
 
@@ -572,9 +570,9 @@ $3 = 1
 
 > `initcode`, 1
 
-![Image 06 Process Info](../../Images/Lab%2002%20System%20Calls/Image%2006%20Process%20Info.png)
+![Image 06 Process Info](./Images/Lab%2002%20System%20Calls/Image%2006%20Process%20Info.png)
 
-## System Call Tracing
+<h2 id="lab-02-system-calls-system-call-tracing">System Call Tracing</h2>
 
 In this part of the lab, we implemented a system call tracing feature for the xv6 operating system. The goal was to allow users and developers to observe which system calls are invoked by a process, along with their return values, for debugging and educational purposes.
 
@@ -625,7 +623,7 @@ test forkforkfork: 407: syscall fork -> 408
 $
 ```
 
-## Attack Xv6
+<h2 id="lab-02-system-calls-attack-xv6">Attack Xv6</h2>
 
 For this lab, a deliberate bug is introduced: when a user process requests new memory pages, the kernel does not clear the contents of those pages before handing them out. As a result, newly allocated memory may contain leftover data from previous processes.
 
@@ -697,7 +695,7 @@ exit(0);
 
 > If we change the offset from 32 to 0, the password will be written at the start of the page, which will be overwritten by the freelist pointer when the page is freed.
 
-## Key Learning Outcomes
+<h2 id="lab-02-system-calls-key-learning-outcomes">Key Learning Outcomes</h2>
 
 * **System Call Implementation:** Gained hands-on experience in adding new system calls to the xv6 kernel and understanding the system call dispatch mechanism.
 * **Kernel and User Debugging:** Learned to use GDB to debug both user programs and kernel code, including analyzing kernel panics and process state.
@@ -705,24 +703,24 @@ exit(0);
 * **Bitmask and Tracing Techniques:** Practiced using bitmasks for selective system call tracing and developed tools to observe kernel-user interactions.
 * **Memory Management Internals:** Investigated how xv6 manages physical and virtual memory, including the use of free lists and the implications for security.
 
-## Challenges and Solutions
+<h2 id="lab-02-system-calls-challenges-and-solutions">Challenges and Solutions</h2>
 
 * **Understanding Kernel Data Structures:** It was challenging to trace how memory pages are managed and reused in xv6. Careful reading of the kernel source and use of GDB helped clarify the flow of memory allocation and freeing.
 * **Debugging Across User and Kernel Space:** Debugging issues that span user and kernel space required learning how to interpret trapframes, process states, and memory mappings using GDB.
 * **Correct Bitmask Handling:** Ensuring that the correct system call numbers were mapped to the correct bits in the tracing mask required attention to detail and testing with various system calls.
 * **Exploiting the Vulnerability Reliably:** Crafting the attack to reliably recover the secret required understanding the freelist pointer overwrite and adjusting the scanning logic to skip the first 8 bytes of each page.
 
-## Conclusion
+<h2 id="lab-02-system-calls-conclusion">Conclusion</h2>
 
 Lab 02 provided practical experience with the implementation and debugging of system calls in xv6, as well as a deeper understanding of kernel memory management and process isolation. By tracing system calls and exploiting a deliberate vulnerability, we saw firsthand how small bugs in the kernel can have significant security consequences. The lab reinforced the importance of careful kernel programming and provided valuable skills in debugging, kernel development, and
 
 # Lab 03 Page Tables
 
-## Introduction
+<h2 id="lab-03-page-tables-introduction">Introduction</h2>
 
 In this lab, we explore the xv6 virtual memory subsystem, focusing on performance optimization, debugging, and advanced feature implementation. The key tasks include inspecting page tables, optimizing system calls, and implementing superpage support.
 
-## Setup
+<h2 id="lab-03-page-tables-setup">Setup</h2>
 
 To access the source code and run the programs:
 
@@ -731,7 +729,7 @@ cd Xv6-RISCV
 git checkout pgtbl
 ```
 
-## Inspect Page Tables
+<h2 id="lab-03-page-tables-inspect-page-tables">Inspect Page Tables</h2>
 
 Run `make qemu` and run the user program `pgtbltest`. The `print_pgtbl` functions prints out the page-table entries for the first 10 and last 10 pages of the `pgtbltest` process using the `pgpte` system call that we added to xv6 for this lab. The output looks as follows:
 
@@ -828,7 +826,7 @@ The output demonstrates how xv6:
 * Shares certain pages between kernel/user
 * Leaves guard pages unmapped for safety
 
-## Speed Up System Calls
+<h2 id="lab-03-page-tables-speed-up-system-calls">Speed Up System Calls</h2>
 
 System calls are the fundamental interface between user applications and the kernel, but they carry a significant performance cost. Each call involves a hardware trap, saving and restoring the user context, switching to the kernel's context and stack, and finally returning to user space. For simple, frequently used, read-only system calls like `getpid()`, this overhead can vastly outweigh the actual work being done. To mitigate this bottleneck, we implemented a technique that uses a shared memory page to allow user processes to access certain kernel-provided data without initiating a full system call.
 
@@ -900,7 +898,7 @@ Which other xv6 system call(s) could be made faster using this shared page? Expl
 
 Many other read-only system calls could be made faster, e.g. `getpid`, `uptime`, `getppid`, `sysinfo`, the method is similar to the `ugetpid` implementation. The idea is to create a shared page in a read-only region and allow user to access it directly without trapping into the kernel.
 
-## Print a Page Table
+<h2 id="lab-03-page-tables-print-a-page-table">Print a Page Table</h2>
 
 We implement a system call to print a process's page table with `vmprint`. This function iterates through the page table entries and prints out the virtual address, page table entry value, physical address for each entry. The implementation is similar to the `freewalk` function in `vm.c`, adapting recursive page table walking to print the relevant information.
 
@@ -959,11 +957,11 @@ page table 0x0000000080124000:
 
 Of course. Here is the report section for "Superpage Support," explaining the implementation details from the provided `kalloc.c` and `vm.c` files, following the established format.
 
-## Superpage Support
+<h2 id="lab-03-page-tables-superpage-support">Superpage Support</h2>
 
 Modern processors support mapping memory in larger chunks than the standard 4KB page size. On RISC-V, this is achieved by using a level 1 Page Table Entry (PTE) as a "leaf" to point directly to a 2MB physical page, known as a superpage. Using superpages significantly improves performance by reducing the number of entries in the Translation Lookaside Buffer (TLB) needed to map large regions of memory, which in turn reduces TLB misses and the costly page walks that follow. This section details the implementation of a 2MB superpage allocator and its integration into the xv6 virtual memory system.
 
-### Superpage Allocation Mechanism
+<h3 id="lab-03-page-tables-superpage-allocation-mechanism">Superpage Allocation Mechanism</h3>
 
 To support allocating both 4KB and 2MB pages, we implemented a simplified two-level buddy-style allocator. This system manages two distinct freelists and includes logic for splitting large pages into smaller ones and merging small pages back into large ones when possible.
 
@@ -1027,7 +1025,7 @@ acquire(&kmem.lock);
 release(&kmem.lock);
 ```
 
-### Superpage Support in the Kernel
+<h3 id="lab-03-page-tables-superpage-support-in-the-kernel">Superpage Support in the Kernel</h3>
 
 With the ability to allocate physical superpages, the virtual memory system (`vm.c`) was updated to map them correctly.
 
@@ -1243,13 +1241,13 @@ err:
 }
 ```
 
-## Relevant Files
+<h2 id="lab-03-page-tables-relevant-files">Relevant Files</h2>
 
 * `kernel/kalloc.c`: Contains the implementation of the buddy-style allocator, including the logic for splitting and merging pages.
 * `kernel/vm.c`: Implements the `vmprint` function and superpage support, including the `superwalk`, `mapsuperpages`, `uvmunmap`, etc.
 * `kernel/proc.c`: Modified to allocate and manage the `USYSCALL` page for each process.
 
-## Key Learning Outcomes
+<h2 id="lab-03-page-tables-key-learning-outcomes">Key Learning Outcomes</h2>
 
 This lab provided a comprehensive, hands-on exploration of the xv6 virtual memory subsystem, focusing on performance optimization, debugging, and advanced feature implementation. The key takeaways span from the user-kernel interface down to the physical memory allocator.
 
@@ -1259,7 +1257,7 @@ This lab provided a comprehensive, hands-on exploration of the xv6 virtual memor
 * **Hardware Feature Integration (Superpages)**: Learned to harness a key CPU performance feature by integrating superpage support throughout the kernel. This was not just an allocator change but a holistic effort that required modifying page table walking (`superwalk`), memory mapping (`mapsuperpages`), and all major user memory VFS operations (`uvmalloc`, `uvmdealloc`, `uvmcopy`).
 * **Understanding Performance Trade-offs**: This lab highlighted the constant trade-offs in kernel design. The superpage allocator is significantly more complex than the original, but offers substantial performance gains by reducing TLB misses. The `USYSCALL` page adds setup complexity but makes `getpid` almost free. These exercises demonstrated how to reason about when and why such trade-offs are beneficial.
 
-## Challenges and Solutions
+<h2 id="lab-03-page-tables-challenges-and-solutions">Challenges and Solutions</h2>
 
 Implementing these wide-ranging features involved overcoming several classic kernel development challenges:
 
@@ -1272,7 +1270,7 @@ Implementing these wide-ranging features involved overcoming several classic ker
 * **Correctly Handling Hierarchical Page Tables**: Implementing `vmprint` and superpage support both required a deep and precise understanding of the RISC-V multi-level page table structure.
 * **Solution**: For `vmprint`, a recursive traversal function was the natural solution to print the tree structure. For superpages, a new `superwalk` function was created to stop the walk at level 1, allowing the kernel to correctly install a leaf PTE at the appropriate level to map a 2MB page.
 
-## Conclusion
+<h2 id="lab-03-page-tables-conclusion">Conclusion</h2>
 
 This lab was a transformative exercise in evolving the xv6 kernel's memory subsystem from a simple, functional implementation into a more performant, debuggable, and feature-rich system. By tackling optimizations at multiple layers—from the system call interface down to the physical page allocator—we achieved significant performance gains and added capabilities that mirror those in modern operating systems.
 
@@ -1280,11 +1278,11 @@ The implementation of superpage support with a dynamic splitting and merging all
 
 # Lab 04 Traps
 
-## Introduction
+<h2 id="lab-04-traps-introduction">Introduction</h2>
 
 In this lab, we explore the concept of traps in operating systems on the RISC-V architecture. We analyze RISC-V assembly code to understand function calls and the stack, implement a kernel function to print the call stack (backtrace), and build a user-level periodic alarm mechanism that utilizes timer interrupts and context switching.
 
-## Setup
+<h2 id="lab-04-traps-setup">Setup</h2>
 
 To access the source code and run the programs:
 
@@ -1293,7 +1291,7 @@ cd Xv6-RISCV
 git checkout traps
 ```
 
-## RISC-V Assembly
+<h2 id="lab-04-traps-risc-v-assembly">RISC-V Assembly</h2>
 
 There is a file `user/call.c` in your xv6 repo. `make fs.img` compiles it and also produces a readable assembly version of the program in `user/call.asm`.
 
@@ -1445,7 +1443,7 @@ Looking at the assembly code for printf:
 * `vprintf` then reads the second `%d` and attempts to retrieve the next argument from the location immediately following the first argument in the `va_list's` view of the stack, which is `s0 + 16`.
 * The value stored at `s0 + 16` is the original content of the `a2` register when `printf` was called. Since no second argument was provided in the C code, the value in `a2` is whatever happened to be there from previous operations. This value is not defined or predictable.
 
-## Backtrace
+<h2 id="lab-04-traps-backtrace">Backtrace</h2>
 
 The goal of this part of the lab was to implement a `backtrace()` function in the kernel that prints the call stack of the currently running process. This is a crucial debugging tool.
 
@@ -1506,7 +1504,7 @@ backtrace();
 * `PGROUNDDOWN()`: Calculates the page-aligned base address of a memory address.
 * `myproc()`: Gets the current process structure.
 
-## Alarm
+<h2 id="lab-04-traps-alarm">Alarm</h2>
 
 This part of the lab involved implementing a periodic alarm mechanism for user processes using the `sigalarm` and `sigreturn` system calls and handling timer interrupts.
 
@@ -1642,7 +1640,7 @@ int main() {
 }
 ```
 
-## Key Learning Outcomes
+<h2 id="lab-04-traps-key-learning-outcomes">Key Learning Outcomes</h2>
 
 This lab provided a deep dive into the core mechanisms of an operating system, particularly focusing on traps and the interaction between user space and the kernel. Key learning outcomes include:
 
@@ -1655,7 +1653,7 @@ This lab provided a deep dive into the core mechanisms of an operating system, p
 * **Preventing Re-entrancy:** Implementing logic to prevent a signal handler from being interrupted by another instance of the same signal, which is a common requirement in signal handling.
 * **System Call Implementation:** Gaining experience in adding new system calls (`sigalarm`, `sigreturn`) to the xv6 kernel, including argument parsing and integrating them with kernel data structures and logic.
 
-## Challenges and Solutions
+<h2 id="lab-04-traps-challenges-and-solutions">Challenges and Solutions</h2>
 
 Implementing the traps lab involved several challenges:
 
@@ -1666,17 +1664,17 @@ Implementing the traps lab involved several challenges:
 * **Preventing Re-entrant Handlers:** The `in_handler` flag was introduced specifically to solve the problem of a handler being interrupted by another alarm before it could finish and call `sigreturn`. This simple flag effectively serializes handler execution.
 * **Seamless Context Switching:** The core challenge in the alarm was making the transition to and from the user handler appear seamless to the interrupted user program. This was achieved by meticulously saving the original `trapframe` and restoring it in `sys_sigreturn`, ensuring the `epc`, `sp`, and all user registers return to their state before the alarm.
 
-## Conclusion
+<h2 id="lab-04-traps-conclusion">Conclusion</h2>
 
 Lab 04 provided essential hands-on experience with the fundamental concepts of operating system traps, user-kernel interaction, and process context management on the RISC-V architecture. By implementing the `backtrace` and alarm mechanisms, we solidified our understanding of stack frames, calling conventions, interrupt handling, and the critical process of saving and restoring user state. The alarm implementation, in particular, highlighted the complexities of asynchronous event delivery and the need for careful state management within the kernel to support user-level signal handling. This lab served as a crucial step in understanding how an operating system manages the execution environment of user programs and responds to hardware events.
 
 # Lab 05 Copy-on-Write Fork
 
-## Introduction
+<h2 id="lab-05-copy-on-write-fork-introduction">Introduction</h2>
 
 In this lab, we implemented Copy-on-Write (COW) fork in the xv6 operating system. COW is an optimization technique that allows multiple processes to share the same physical memory pages until one of them attempts to modify a page. This reduces memory usage and improves performance by avoiding unnecessary copying of pages during the `fork` operation.
 
-## Setup
+<h2 id="lab-05-copy-on-write-fork-setup">Setup</h2>
 
 To access the source code and run the programs:
 
@@ -1685,7 +1683,7 @@ cd Xv6-RISCV
 git checkout cow
 ```
 
-## Reference Counting
+<h2 id="lab-05-copy-on-write-fork-reference-counting">Reference Counting</h2>
 
 To support copy-on-write (COW) fork, we need to implement reference counting for pages. This allows us to track how many processes share a page and only free the page when no processes are using it. A `kref` structure is added to `kernel/kalloc.c` to manage the reference count for each page.
 
@@ -1788,7 +1786,7 @@ krefget(void *pa)
 * `kernel/kalloc.c`: Contains the implementation of `kalloc`, `kfree`, `krefinc`, and `krefget`.
 * `kernel/defs.h`: Contains the declaration of `krefinc` and `krefget`.
 
-## COW Fork
+<h2 id="lab-05-copy-on-write-fork-cow-fork">COW Fork</h2>
 
 The `uvmcopy` function is used to create a copy of the user memory space for a new process. To implement COW, several modifications are made:
 
@@ -1840,7 +1838,7 @@ The `PTE_COW` flag is defined in `kernel/riscv.h` to indicate that a page is mar
 * `kernel/vm.c`: Contains the modified `uvmcopy` function.
 * `kernel/riscv.h`: Contains the definition of `PTE_COW`.
 
-## COW Page Fault Handling
+<h2 id="lab-05-copy-on-write-fork-cow-page-fault-handling">COW Page Fault Handling</h2>
 
 When a process attempts to write to a page that is marked as Copy-on-Write, a page fault occurs. We handle this fault in `handle_cow` function when a store page fault occurs:
 
@@ -1993,7 +1991,7 @@ copyout(pagetable_t pagetable, uint64 dstva, char *src, uint64 len)
 * `kernel/trap.c`: Contains the `handle_cow` function to handle COW page faults.
 * `kernel/defs.h`: Contains the declaration of `handle_cow`.
 
-## Key Learning Outcomes
+<h2 id="lab-05-copy-on-write-fork-key-learning-outcomes">Key Learning Outcomes</h2>
 
 This lab provided a deep dive into advanced virtual memory management techniques, specifically focusing on the Copy-on-Write (COW) fork mechanism. Key learning outcomes include:
 
@@ -2003,7 +2001,7 @@ This lab provided a deep dive into advanced virtual memory management techniques
 * **Copy-on-Write Logic:** Understanding the core COW principle: sharing pages initially and only copying them when a write attempt occurs on a shared page. Implementing the COW break logic in `handle_cow` and `copyout`.
 * **Interplay of OS Components:** Observing how different parts of the OS (process management, memory allocation, trap handling, system calls like `fork` and `exec`) interact and need to be coordinated to support COW.
 
-## Challenges and Solutions
+<h2 id="lab-05-copy-on-write-fork-challenges-and-solutions">Challenges and Solutions</h2>
 
 Implementing the COW fork mechanism presented several challenges:
 
@@ -2013,17 +2011,17 @@ Implementing the COW fork mechanism presented several challenges:
 * **Integrating with `copyout`:** Recognizing that `copyout` also performs writes to user memory and needs to trigger the COW break mechanism was important. Modifying `copyout` to check for `PTE_COW` and perform the necessary copy logic was required.
 * **Debugging Page Table Issues:** Debugging page table manipulation and trap handling often involves examining register values (`scause`, `stval`, `sepc`) and page table entries, which can be complex. Using print statements and GDB was essential for tracing execution flow and identifying incorrect PTE states or memory accesses.
 
-## Conclusion
+<h2 id="lab-05-copy-on-write-fork-conclusion">Conclusion</h2>
 
 Lab 05 provided valuable practical experience in implementing a fundamental operating system optimization: Copy-on-Write fork. By deferring the copying of memory pages until they are actually modified, COW significantly improves the performance of `fork` by reducing memory consumption and CPU overhead. This lab reinforced our understanding of virtual memory concepts, page table management, and the critical role of trap handling in responding to memory access events. Implementing the reference counting and integrating the COW logic into the existing xv6 memory management and trap handling code demonstrated the interconnectedness of different OS components and the challenges involved in building efficient and correct memory sharing mechanisms.
 
 # Lab 06 Networking
 
-## Introduction
+<h2 id="lab-06-networking-introduction">Introduction</h2>
 
 In this lab, we implement a basic network stack in the xv6 operating system kernel, focusing on the Intel E1000 network interface card (NIC) driver. The goal is to enable user processes to send and receive UDP packets over a simulated network. This involved writing a device driver for the E1000 NIC, implementing basic network protocols (ARP, IP, UDP), and providing a socket-like interface for user-space applications.
 
-## Setup
+<h2 id="lab-06-networking-setup">Setup</h2>
 
 To access the source code and run the programs:
 
@@ -2032,7 +2030,7 @@ cd Xv6-RISCV
 git checkout cow
 ```
 
-## NIC Driver
+<h2 id="lab-06-networking-nic-driver">NIC Driver</h2>
 
 The network interface card (NIC) driver in xv6 is implemented in `kernel/e1000.c`. It interacts with the Intel E1000 network adapter, which is emulated by QEMU. The driver is responsible for initializing the device, transmitting packets, and receiving packets via interrupts.
 
@@ -2133,7 +2131,7 @@ e1000_recv(void)
 }
 ```
 
-## UDP Packet Receive
+<h2 id="lab-06-networking-udp-packet-receive">UDP Packet Receive</h2>
 
 The UDP packet reception path involves several functions in `kernel/net.c`, starting from `net_rx` which is called by the NIC driver (`e1000_recv`).
 
@@ -2306,7 +2304,7 @@ sys_recv(void)
 * `allocsock` finds a free `struct socket` entry in the `sockets` array, initializes its fields (type, port, IP), sets up the receive queue pointers and count, and initializes the socket's spinlock.
 * `freesock` finds the socket by port number, marks it as free, and iterates through its receive queue to kfree all queued packet buffers before resetting the queue state.
 
-## Relevant Files
+<h2 id="lab-06-networking-relevant-files">Relevant Files</h2>
 
 * `kernel/e1000.c`: Implementation of the E1000 network interface card driver.
 * `kernel/net.c`: Implementation of the basic network stack, including ARP, IP, UDP, and socket management.
@@ -2314,7 +2312,7 @@ sys_recv(void)
 * `kernel/sysproc.c`: Contains the system call implementations for network operations (`sys_bind`, `sys_unbind`, `sys_send`, `sys_recv`).
 * `user/nettest.c`: User-level program used for testing the network stack (e.g., ping, UDP tests).
 
-## Key Learning Outcomes
+<h2 id="lab-06-networking-key-learning-outcomes">Key Learning Outcomes</h2>
 
 This lab provided hands-on experience in building a basic network stack within an operating system kernel. Key learning outcomes include:
 
@@ -2326,7 +2324,7 @@ This lab provided hands-on experience in building a basic network stack within a
 * **Synchronization:** Applying spinlocks to protect shared data structures like the NIC's descriptor rings, the port binding bitmap, and the socket receive queues from concurrent access by different kernel threads or interrupt handlers.
 * **System Call Implementation:** Adding new system calls to expose network functionality to user-space applications.
 
-## Challenges and Solutions
+<h2 id="lab-06-networking-challenges-and-solutions">Challenges and Solutions</h2>
 
 Implementing the networking stack in xv6 presented several challenges:
 
@@ -2344,17 +2342,17 @@ Implementing the networking stack in xv6 presented several challenges:
 * **Solution**: Implementing a circular buffer (or linked list) with a spinlock and using `sleep` and `wakeup` on the socket structure.
 * **Memory Leaks in Socket Queues:** A specific challenge was ensuring that packet buffers queued in a socket's receive queue are freed when the socket is unbound, even if the user process hasn't called `recv` for all packets. Solution: Implementing logic in `freesock` to iterate through the queue and `kfree` any remaining packet buffers.
 
-## Conclusion
+<h2 id="lab-06-networking-conclusion">Conclusion</h2>
 
 Lab 06 provided a comprehensive introduction to network programming within an operating system kernel. We successfully implemented a basic network driver for the emulated E1000 NIC and built a simple network stack capable of handling ARP, IP, and UDP packets. By implementing socket-like functionality, we enabled user processes to perform network communication. This lab reinforced our understanding of device drivers, network protocols, kernel memory management, synchronization, and the process of adding new system calls to an operating system. The challenges encountered highlighted the complexities of managing shared resources and buffer lifetimes in a concurrent kernel environment.
 
 # Lab 07 Lock
 
-## Introduction
+<h2 id="lab-07-lock-introduction">Introduction</h2>
 
 In this lab, we will optimize the memory allocator and buffer cache of the xv6 operating system to improve performance on multi-core systems. The original implementations used coarse-grained locking strategies that severely limited concurrency, leading to performance bottlenecks. We will replace these with fine-grained locking techniques, allowing multiple cores to operate concurrently without contention.
 
-## Setup
+<h2 id="lab-07-lock-setup">Setup</h2>
 
 To access the source code and run the programs:
 
@@ -2363,13 +2361,13 @@ cd Xv6-RISCV
 git checkout lock
 ```
 
-## Optimizing Memory Allocator
+<h2 id="lab-07-lock-optimizing-memory-allocator">Optimizing Memory Allocator</h2>
 
 A key challenge in a multi-core operating system is managing contention for shared resources. The original xv6 memory allocator (`kalloc`) used a single, global freelist protected by a single lock. This design becomes a significant performance bottleneck on multi-core systems, as all CPUs must compete for this one lockinflammation for every memory allocation and deallocation, leading to high lock contention and serialized execution.
 
 To address this, we re-architected the memory allocator to use a per-CPU freelist design, supplemented by a work-stealing mechanism. This approach dramatically reduces lock contention and improves the overall scalability of the kernel.
 
-### Per-CPU Freelist
+<h3 id="lab-07-lock-per-cpu-freelist">Per-CPU Freelist</h3>
 
 The core of the new design is to give each CPU core its own private pool of free memory pages. The global `kmem` structure was transformed into an array, where each element corresponds to a CPU core:
 
@@ -2387,7 +2385,7 @@ struct {
 
 During initialization (`kinit`), each per-CPU structure is initialized with its own lock. `freerange` is modified to populate the freelist of the specific CPU it is running on.
 
-### Allocation and Deallocation Path
+<h3 id="lab-07-lock-allocation-and-deallocation-path">Allocation and Deallocation Path</h3>
 
 With this new structure, the common-case allocation (`kalloc`) and deallocation (`kfree`) operations become highly parallel:
 
@@ -2408,7 +2406,7 @@ r = kmem[cpu].freelist;
 release(&kmem[cpu].lock);
 ```
 
-### Work-Stealing Mechanism
+<h3 id="lab-07-lock-work-stealing-mechanism">Work-Stealing Mechanism</h3>
 
 A per-CPU design introduces a new problem: what if one CPU's freelist becomes empty while other CPUs have plenty of free pages? To solve this imbalance, we implemented a work-stealing mechanism in the `ksteal` function.
 
@@ -2435,7 +2433,7 @@ if(!r){
 }
 ```
 
-### Synchronization and Deadlock Avoidance
+<h3 id="lab-07-lock-synchronization-and-deadlock-avoidance">Synchronization and Deadlock Avoidance</h3>
 
 The stealing mechanism introduces a new synchronization challenge: a CPU might need to hold two locks simultaneously (the victim's and its own). The initial implementation of `ksteal` acquired the victim's lock, moved pages, released the victim's lock, and then acquired its own lock. This "lock-coupling" approach avoids holding two locks at once, thereby preventing a classic AB-BA deadlock scenario where two CPUs might try to steal from each other simultaneously and wait indefinitely for the other's lock.
 
@@ -2453,9 +2451,7 @@ ksteal(int stealer)
 
   total_stolen = 0;
 
-  for(cpu = 0; cpu < NCPU; cpu++){
-    if(cpu == stealer)
-      continue; // Skip self.
+  for(cpu = (stealer + 1) % NCPU; cpu != stealer; cpu = (cpu + 1) % NCPU){
     acquire(&kmem[cpu].lock);
     start = kmem[cpu].freelist;
     end = start;
@@ -2500,13 +2496,13 @@ ksteal(int stealer)
 }
 ```
 
-## Optimizing Buffer Cache
+<h2 id="lab-07-lock-optimizing-buffer-cache">Optimizing Buffer Cache</h2>
 
 The original xv6 buffer cache (`bcache`) relied on a single global lock to protect a simple LRU linked list of all buffers. This design, while simple, forces all block cache operations to be serialized, creating a major performance bottleneck in multi-core environments where file system access is frequent. To significantly improve concurrency and performance, we redesigned the buffer cache by replacing the global lock with a fine-grained locking strategy based on a hash table.
 
 This optimization involved three key components: a **hash table with per-bucket locking**, a **bitmap freelist** for fast allocation, and a **CLOCK algorithm** for efficient buffer replacement.
 
-### Hash Table with Per-Bucket Locks
+<h3 id="lab-07-lock-hash-table-with-per-bucket-locks">Hash Table with Per-Bucket Locks</h3>
 
 To allow concurrent access to different blocks, we replaced the single linked list with a hash table. The hash table partitions the buffer cache into `NBUCKETS` (a prime number, 13) buckets.
 
@@ -2528,14 +2524,14 @@ if(bufidx >= 0) {
 }
 ```
 
-### Bitmap Freelist for Fast Allocation
+<h3 id="lab-07-lock-bitmap-freelist-for-fast-allocation">Bitmap Freelist for Fast Allocation</h3>
 
 To quickly find an available `buf` structure when a block is not in the cache, we replaced the O(N) linear scan of the original LRU list with a bitmap freelist.
 
 * **Data Structure**: A single 32-bit integer (`bcache.freelist`) is used, where each bit corresponds to the state of one of the `NBUF` buffers (0 for free, 1 for used).
 * **O(1) Allocation**: The `allocbuf` function now performs a fast bitwise scan on this bitmap to find the first free buffer. This is significantly more efficient than iterating through a list or array, especially as the number of buffers grows. The operation is protected by the corresponding bucket lock to ensure atomicity during the cache-miss path.
 
-### CLOCK Algorithm for Buffer Eviction
+<h3 id="lab-07-lock-clock-algorithm-for-buffer-eviction">CLOCK Algorithm for Buffer Eviction</h3>
 
 The original LRU replacement policy was tightly coupled with the global lock. We replaced it with the **CLOCK algorithm**, an efficient approximation of LRU that is well-suited for a concurrent environment.
 
@@ -2588,7 +2584,7 @@ panic("bget: no buffers");
 
 By combining these three optimizations, the buffer cache is transformed from a serial bottleneck into a highly concurrent and performant system component. The contention on any single lock is minimized, allowing the xv6 kernel to scale effectively on multi-core processors and handle demanding file system workloads efficiently.
 
-## Relevant Files
+<h2 id="lab-07-lock-relevant-files">Relevant Files</h2>
 
 * `kernel/kalloc.c`: Contains the new memory allocator implementation, including the per-CPU freelist and work-stealing mechanism.
 * `kernel/bio.c`: Contains the primary implementation of the buffer cache, including the hash table, per-bucket locks, bitmap freelist, and the CLOCK replacement algorithm.
@@ -2596,7 +2592,7 @@ By combining these three optimizations, the buffer cache is transformed from a s
 
 Of course. Here is the consolidated summary section for both the Memory Allocator and Buffer Cache optimizations, following the structure you provided.
 
-## Key Learning Outcomes
+<h2 id="lab-07-lock-key-learning-outcomes">Key Learning Outcomes</h2>
 
 This lab provided deep, practical experience in identifying and resolving performance bottlenecks in a multi-core kernel through advanced locking strategies.
 
@@ -2607,7 +2603,7 @@ This lab provided deep, practical experience in identifying and resolving perfor
 * **Deadlock Avoidance**: Gained practical experience in identifying and preventing deadlock, particularly when a single operation requires acquiring multiple locks. The principle of establishing a global lock acquisition order was a key takeaway.
 * **Performance Analysis**: Learned to interpret performance metrics (like lock contention counts from `ntas`) to pinpoint bottlenecks and validate the effectiveness of optimizations. The dramatic difference in `bcachetest` execution time underscored the real-world impact of algorithmic choices in a concurrent setting.
 
-## Challenges and Solutions
+<h2 id="lab-07-lock-challenges-and-solutions">Challenges and Solutions</h2>
 
 Implementing these optimizations involved overcoming several classic kernel development challenges:
 
@@ -2623,17 +2619,17 @@ Implementing these optimizations involved overcoming several classic kernel deve
 * **Cache Thrashing and Performance Degradation**: The initial, non-LRU replacement strategy (simply picking any unused buffer) caused severe performance degradation in `bcachetest`, leading to timeouts. The cache was unable to retain "hot" data when faced with a competing "cold" data scan.
 * **Solution**: The CLOCK algorithm was implemented. By giving recently used buffers a "second chance" before eviction, it effectively differentiates between frequently accessed blocks and those from a one-time scan. This successfully mitigates cache thrashing and allows the performance-critical tests to pass.
 
-## Conclusion
+<h2 id="lab-07-lock-conclusion">Conclusion</h2>
 
 This lab was a crucial exercise in modernizing a monolithic kernel for the multi-core era. By transforming both the memory allocator and the buffer cache from single-lock, serialized systems into highly concurrent, fine-grained locked subsystems, we achieved a significant leap in performance and scalability. The process involved not just implementing new data structures like hash tables and bitmaps, but also reasoning deeply about concurrency primitives, deadlock, race conditions, and the practical performance implications of different algorithms. The final solution, employing per-CPU freelists with work-stealing and a lock-striped hash cache with a CLOCK replacement policy, reflects the sophisticated yet practical designs found in production operating systems today.
 
 # Lab 08 File System
 
-## Introduction
+<h2 id="lab-08-file-system-introduction">Introduction</h2>
 
 In this lab, we extended the xv6 file system to support two significant features: large files and symbolic links. These enhancements not only increase the practical usability of the file system but also provide a deeper understanding of how modern operating systems manage files and directories.
 
-## Setup
+<h2 id="lab-08-file-system-setup">Setup</h2>
 
 To access the source code and run the programs:
 
@@ -2642,7 +2638,7 @@ cd Xv6-RISCV
 git checkout fs
 ```
 
-## Large Files
+<h2 id="lab-08-file-system-large-files">Large Files</h2>
 
 The original xv6 file system had a significant limitation on file size. An inode could only address `NDIRECT + NINDIRECT` blocks, which translates to `11 + (1024 / 4) = 11 + 256 = 267` blocks, or approximately 267KB. This is insufficient for many modern applications. To overcome this, we extended the file system to support much larger files by implementing **double indirect blocks**.
 
@@ -2741,7 +2737,7 @@ if(ip->addrs[NDIRECT + 1]){
 
 This careful, multi-level deallocation ensures that the entire tree of blocks associated with a large file is correctly returned to the file system's free block pool.
 
-## Symbolic Links
+<h2 id="lab-08-file-system-symbolic-links">Symbolic Links</h2>
 
 The standard xv6 file system supports only regular files, directories, and devices. To enhance its functionality and align it more closely with modern UNIX-like systems, we introduced support for **symbolic links** (symlinks). A symbolic link is a special type of file whose content is a path to another file or directory.
 
@@ -2835,7 +2831,7 @@ if(!(omode & O_NOFOLLOW)) {
 
 By implementing both the creation and resolution logic, we have integrated full-featured symbolic link support into the xv6 file system, enhancing its flexibility and functionality.
 
-## Relevant Files
+<h2 id="lab-08-file-system-relevant-files">Relevant Files</h2>
 
 * `kernel/fs.c`: Contains the modifications to the `bmap` and `itrunc` functions for large file support.
 * `kernel/fs.h`, `kernel/file.h`: Contains the modifications to the inode structure to support double indirect blocks.
@@ -2844,7 +2840,7 @@ By implementing both the creation and resolution logic, we have integrated full-
 * `kernel/stat.h`: Contains the new file type `T_SYMLINK` definition.
 * `kernel/syscall.c`, `kernel/syscall.h`, `kernel/user.h`, `user/usys.pl`: Contains the new system call registration and user-space interface for `symlink`.
 
-## Key Learning Outcomes
+<h2 id="lab-08-file-system-key-learning-outcomes">Key Learning Outcomes</h2>
 
 These labs provided a deep, hands-on understanding of core file system concepts and the engineering challenges involved in extending a kernel's capabilities.
 
@@ -2855,7 +2851,7 @@ These labs provided a deep, hands-on understanding of core file system concepts 
 * **Resource Management and Atomicity**: Gained critical experience in managing kernel resources (inodes, file descriptors, disk blocks) within transactional boundaries (`begin_op`/`end_op`). This highlighted the importance of ensuring that all resources are correctly allocated and, crucially, deallocated, especially on failure paths.
 * **Defensive Programming in the Kernel**: Learned the importance of writing robust kernel code that anticipates and correctly handles edge cases and potential errors, such as circular symlinks, dangling links, and out-of-space conditions during multi-step operations.
 
-## Challenges and Solutions
+<h2 id="lab-08-file-system-challenges-and-solutions">Challenges and Solutions</h2>
 
 Implementing these file system features exposed several classic and subtle kernel programming challenges, primarily related to resource management and the robustness of error-handling paths.
 
@@ -2868,15 +2864,15 @@ Implementing these file system features exposed several classic and subtle kerne
 * **Handling Circular Symbolic Links**: A naive implementation of symlink following would enter an infinite loop if faced with a circular link (e.g., a -> b, b -> a).
 * **Solution**: We implemented a simple but effective loop counter within the `sys_open` resolution logic. If the number of symbolic link traversals exceeds a reasonable limit (e.g., 10), the operation is aborted, and an error is returned to the user, preventing a kernel hang or stack overflow.
 
-## Conclusion
+<h2 id="lab-08-file-system-conclusion">Conclusion</h2>
 
 This lab was a deep dive into the practical engineering of a UNIX-like file system. By implementing support for large files and symbolic links, we moved xv6 from a basic teaching tool closer to a functionally recognizable operating system. The challenges encountered, particularly in ensuring robust error handling and preventing subtle race conditions during path resolution, were profound learning experiences. They underscored that in kernel development, correct resource management across all code paths—especially failure paths—is paramount for system stability. The final, functional file system is a testament to the careful, defensive, and structured programming required to build reliable OS components.
 
 # Lab 09 MMAP
 
-## Introduction
+<h2 id="lab-09-mmap-introduction">Introduction</h2>
 
-## Setup
+<h2 id="lab-09-mmap-setup">Setup</h2>
 
 To access the source code and run the programs:
 
@@ -2885,7 +2881,7 @@ cd Xv6-RISCV
 git checkout mmap
 ```
 
-## Overview
+<h2 id="lab-09-mmap-overview">Overview</h2>
 
 In modern operating systems, `mmap` (memory map) is a powerful system call that provides a mechanism for sophisticated memory management. Its primary functions include enabling high-performance file I/O, facilitating memory sharing between processes, and allowing applications to exercise fine-grained control over their virtual address space. By mapping a file directly into a process's address space, `mmap` allows the file to be accessed with simple pointer operations, as if it were an in-memory array. This approach eliminates the overhead of repeated `read()` and `write()` system calls and avoids the extra data copying between kernel and user space, thus providing a significant performance advantage.
 
@@ -2910,7 +2906,7 @@ The corresponding `munmap` call is used to remove a memory mapping:
 int munmap(void *addr, size_t len);
 ```
 
-### Implemented Features
+<h3 id="lab-09-mmap-implemented-features">Implemented Features</h3>
 
 For this lab, we implemented a simplified but functional subset of the `mmap` and `munmap` features, focusing on the core functionality of memory-mapping files:
 
@@ -2923,11 +2919,11 @@ For this lab, we implemented a simplified but functional subset of the `mmap` an
 * **Lazy Allocation**: A key feature of our implementation is lazy page allocation. `mmap` itself does not allocate physical memory or read file data. Instead, physical pages are allocated and populated with file content on-demand within the page fault handler (`usertrap`) the first time a memory location in the mapped region is accessed.
 * **Partial Unmapping**: The `munmap` implementation supports unmapping a region at the start, at the end, or the entire mapped area, but not punching a hole in the middle of a VMA.
 
-## Virtual Memory Area (VMA)
+<h2 id="lab-09-mmap-virtual-memory-area-vma">Virtual Memory Area (VMA)</h2>
 
 To manage the memory regions created by `mmap`, we introduced the concept of a Virtual Memory Area (VMA) into the kernel. A VMA is a kernel data structure that describes a contiguous range of a process's virtual address space and its associated properties.
 
-### The VMA Structure
+<h3 id="lab-09-mmap-the-vma-structure">The VMA Structure</h3>
 
 We defined a `struct vma` to hold all the necessary information for a single memory mapping:
 
@@ -2977,7 +2973,7 @@ struct proc {
 };
 ```
 
-### Pre-defined Virtual Address Slots
+<h3 id="lab-09-mmap-pre-defined-virtual-address-slots">Pre-defined Virtual Address Slots</h3>
 
 Instead of searching for a free region in the vast virtual address space, we simplified address allocation by partitioning a large, dedicated segment of the virtual address space into fixed-size "slots".
 
@@ -2994,7 +2990,7 @@ Instead of searching for a free region in the vast virtual address space, we sim
 
 This simplified design is reasonable because a 64-bit virtual address space is enormous compared to the physical memory available. Dedicating a large, high-address region for `mmap` does not practically limit the process's heap growth (managed by `sbrk`) while greatly simplifying the logic for finding an available address range. This strategy effectively trades a small amount of virtual address space flexibility for a significant reduction in implementation complexity.
 
-### Simplified VMA Management
+<h3 id="lab-09-mmap-simplified-vma-management">Simplified VMA Management</h3>
 
 When `munmap` is called, the kernel can handle the required cases by simply adjusting the `start` and `length` fields of the existing VMA, or by clearing the VMA entry if the entire region is unmapped. Since `munmap` will not create a hole, a single VMA never needs to be split into two. This makes managing the fixed array straightforward, as we never need to allocate a new VMA to represent the second half of a split region.
 
@@ -3182,7 +3178,7 @@ A critical detail in the `munmap` implementation for `MAP_SHARED` regions is the
 
 * **Write Size Limitation**: When writing the last page of a file mapping, the page may contain data that extends beyond the actual end-of-file. To avoid incorrectly extending the file's size with junk data from the end of the page, the write size is capped. We use `min(PGSIZE, remaining_file_size)` to ensure the `write` operation stops precisely at the file's end, preserving its original size.
 
-### Page Fault Handling
+<h3 id="lab-09-mmap-page-fault-handling">Page Fault Handling</h3>
 
 The core of the lazy allocation strategy resides in the `usertrap` function, which now delegates page fault handling for the mmap region to a new function, `handlemmap`.
 
@@ -3321,7 +3317,7 @@ for(vmaidx = 0; vmaidx < NVMA; vmaidx++){
 }
 ```
 
-## Relevant Files
+<h2 id="lab-09-mmap-relevant-files">Relevant Files</h2>
 
 * `kernel/proc.h`: Defines the `struct vma` and includes the fixed-size array of VMAs in `struct proc`.
 * `kernel/proc.c`: Contains the `mmap` and `munmap` system call implementations, as well as modifications to `fork` and `exit`.
@@ -3329,7 +3325,7 @@ for(vmaidx = 0; vmaidx < NVMA; vmaidx++){
 * `kernel/trap.c`: Implements the `handlemmap` function to handle page faults for mapped regions.
 * `kernel/sysproc.c`, `kernel/syscall.c`, `kernel/syscall.h`, `kernel/user.h`, `user/usys.pl`: Contains the new system call registration and user-space interface for `mmap` and `munmap`.
 
-## Key Learning Outcomes
+<h2 id="lab-09-mmap-key-learning-outcomes">Key Learning Outcomes</h2>
 
 This lab was a deep dive into the implementation of a fundamental virtual memory feature found in modern operating systems. The key learning outcomes include:
 
@@ -3339,7 +3335,7 @@ This lab was a deep dive into the implementation of a fundamental virtual memory
 * **File System and Memory Management Interaction**: Learned how the virtual memory system and the file system must interact. This included managing file reference counts (`filedup`), locking inodes (`ilock`), and using file I/O functions (`readi`, `filewrite`) within the page fault handler.
 * **Process Lifecycle Integration**: Understood how advanced memory features must be integrated into the core process lifecycle, specifically by modifying `fork()` to correctly inherit memory mappings and `exit()` to ensure proper cleanup and resource deallocation.
 
-## Challenges and Solutions
+<h2 id="lab-09-mmap-challenges-and-solutions">Challenges and Solutions</h2>
 
 Implementing `mmap` and `munmap` presented several subtle but critical challenges, primarily related to correctness under the lazy allocation model and during process lifecycle events.
 
@@ -3352,6 +3348,6 @@ Implementing `mmap` and `munmap` presented several subtle but critical challenge
 * **Correct Resource Management in `fork()` and `exit()`**: Ensuring that file reference counts were managed correctly during `fork` and `exit` was critical to prevent resource leaks or premature deallocation. A simple VMA structure copy is insufficient.
 * **Solution**: In `fork`, we explicitly call `filedup` for each inherited VMA to increment the `struct file` reference count. In `exit`, we ensure `munmap` is effectively called for all active VMAs, which in turn calls `fileclose`, correctly decrementing the reference count and releasing the file resources only when they are no longer in use by any process.
 
-## Conclusion
+<h2 id="lab-09-mmap-conclusion">Conclusion</h2>
 
 This lab was a comprehensive exercise in implementing a sophisticated virtual memory feature. By adding `mmap` and `munmap`, we transformed the xv6 memory model from a simple heap-and-stack layout to a more flexible system capable of supporting advanced programming idioms. The core of the implementation was the VMA management system and the lazy-loading logic within the page fault handler. The challenges encountered, especially in handling concurrency, partial operations, and ensuring correct resource management across the entire process lifecycle, provided invaluable insight into the design and implementation of production-grade operating system kernels. The final result is a more powerful and efficient xv6 kernel that reflects a key aspect of modern OS design.
