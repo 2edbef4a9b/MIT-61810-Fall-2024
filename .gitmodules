@@ -1,3 +1,4 @@
 [submodule "Xv6-RISCV"]
 	path = Xv6-RISCV
-	url = git@github.com:2edbef4a9b/Xv6-RISCV-Assignment.git
+	url = https://github.com/2edbef4a9b/Xv6-RISCV-Assignment.git
+	branch = main
