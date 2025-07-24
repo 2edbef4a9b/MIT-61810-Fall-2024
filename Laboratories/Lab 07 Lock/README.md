@@ -259,7 +259,7 @@ By combining these three optimizations, the buffer cache is transformed from a s
 
 Of course. Here is the consolidated summary section for both the Memory Allocator and Buffer Cache optimizations, following the structure you provided.
 
-### Key Learning Outcomes
+## Key Learning Outcomes
 
 This lab provided deep, practical experience in identifying and resolving performance bottlenecks in a multi-core kernel through advanced locking strategies.
 
@@ -270,7 +270,7 @@ This lab provided deep, practical experience in identifying and resolving perfor
 * **Deadlock Avoidance**: Gained practical experience in identifying and preventing deadlock, particularly when a single operation requires acquiring multiple locks. The principle of establishing a global lock acquisition order was a key takeaway.
 * **Performance Analysis**: Learned to interpret performance metrics (like lock contention counts from `ntas`) to pinpoint bottlenecks and validate the effectiveness of optimizations. The dramatic difference in `bcachetest` execution time underscored the real-world impact of algorithmic choices in a concurrent setting.
 
-### Challenges and Solutions
+## Challenges and Solutions
 
 Implementing these optimizations involved overcoming several classic kernel development challenges:
 
@@ -286,6 +286,6 @@ Implementing these optimizations involved overcoming several classic kernel deve
 * **Cache Thrashing and Performance Degradation**: The initial, non-LRU replacement strategy (simply picking any unused buffer) caused severe performance degradation in `bcachetest`, leading to timeouts. The cache was unable to retain "hot" data when faced with a competing "cold" data scan.
 * **Solution**: The CLOCK algorithm was implemented. By giving recently used buffers a "second chance" before eviction, it effectively differentiates between frequently accessed blocks and those from a one-time scan. This successfully mitigates cache thrashing and allows the performance-critical tests to pass.
 
-### Conclusion
+## Conclusion
 
 This lab was a crucial exercise in modernizing a monolithic kernel for the multi-core era. By transforming both the memory allocator and the buffer cache from single-lock, serialized systems into highly concurrent, fine-grained locked subsystems, we achieved a significant leap in performance and scalability. The process involved not just implementing new data structures like hash tables and bitmaps, but also reasoning deeply about concurrency primitives, deadlock, race conditions, and the practical performance implications of different algorithms. The final solution, employing per-CPU freelists with work-stealing and a lock-striped hash cache with a CLOCK replacement policy, reflects the sophisticated yet practical designs found in production operating systems today.
