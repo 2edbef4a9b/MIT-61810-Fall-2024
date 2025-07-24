@@ -24,7 +24,7 @@ Xv6 是一个由 MIT PDOS 实验室开发的教学操作系统, 旨在帮助学�
 通过 Git 获取代码:
 
 ```bash
-git clone https://github.com/2edbef4a9b/MIT-61810-Fall-2024.git
+git clone --recursive https://github.com/2edbef4a9b/MIT-61810-Fall-2024.git
 ```
 
 仓库结构如下:
@@ -52,6 +52,13 @@ git clone https://github.com/2edbef4a9b/MIT-61810-Fall-2024.git
 ```
 
 运行 `test.sh` 脚本会运行每一个实验的测试用例, 并输出测试结果.
+
+其中 `Xv6-RISCV` 是一个 submodule, 地址为 [https://github.com/2edbef4a9b/Xv6-RISCV-Assignment](https://github.com/2edbef4a9b/Xv6-RISCV-Assignment), 包含了 Xv6 RISCV 实验的源代码和相关文件, 会在运行 `git clone --recursive` 时自动获取, submodule 中包含每个 Lab 对应的分支, 要获取特定实验的代码, 可以使用 `git checkout` 命令切换到对应的分支, 例如:
+
+```bash
+cd Xv6-RISCV
+git checkout pgtbl
+```
 
 ## 目录
 
